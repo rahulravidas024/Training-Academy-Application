@@ -7,6 +7,8 @@ import com.model.Student;
 public interface StudentDao {
 
 	Student getStudent(int studentId);
+	
+	Student getName(int studentId);
 
 	List<Student> getAllStudent();
 

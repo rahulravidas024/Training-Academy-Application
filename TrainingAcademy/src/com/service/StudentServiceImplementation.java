@@ -6,14 +6,14 @@ import com.dao.StudentDao;
 import com.dao.StudentDaoImplementation;
 import com.model.Student;
 
-public class StudentServiceImplementation implements StudentService{
+public class StudentServiceImplementation implements StudentService {
 
 	StudentDao studentDao;
-	
+
 	public StudentServiceImplementation() {
-		studentDao=new StudentDaoImplementation();
+		studentDao = new StudentDaoImplementation();
 	}
-	
+
 	public StudentServiceImplementation(StudentDao studentdao) {
 		this.studentDao = studentdao;
 	}
@@ -25,9 +25,9 @@ public class StudentServiceImplementation implements StudentService{
 	public void setStudentDao(StudentDao studentDao) {
 		this.studentDao = studentDao;
 	}
-	
+
 	public Student getStudent(int studentId) {
-		return null;
+		return studentDao.getStudent(studentId);
 	}
 
 	@Override
@@ -49,6 +49,10 @@ public class StudentServiceImplementation implements StudentService{
 	public int updateStudent(Student student) {
 		return studentDao.updateStudent(student);
 	}
-	
+
+	@Override
+	public Student getName(int studentId) {
+		return studentDao.getName(studentId);
+	}
 
 }

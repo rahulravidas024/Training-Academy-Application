@@ -7,6 +7,8 @@ import com.model.Student;
 public interface StudentService {
 
 	Student getStudent(int studentId);
+	
+	Student getName(int studentId);
 
 	List<Student> getAllStudent();
 
