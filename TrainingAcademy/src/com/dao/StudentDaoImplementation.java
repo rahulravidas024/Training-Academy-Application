@@ -148,4 +148,47 @@ public class StudentDaoImplementation implements StudentDao {
 		return 0;
 	}
 
+	
+	@Override
+	public Student topFiveMeritListBatchWise(int batchId) {
+		try (Connection connection = DBConnection.getConnection();) {
+			PreparedStatement ps = connection.prepareStatement("select s.student_id, s.student_firstname, s.student_lastname, m.percentage, s.batch_id from student s inner join marks m on s.student_id=m.student_id where batch_id=? order by percentage desc limit 5");
+			ps.setInt(1, batchId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				System.out.println("Student ID: " + rs.getInt("student_id"));
+				System.out.println("Student First Name: " + rs.getString("student_firstname"));
+				System.out.println("Student Last Name: " + rs.getString("student_lastname"));
+				System.out.println("Percentage: " + rs.getFloat("percentage"));
+				System.out.println("Batch ID: " + rs.getInt("batch_id"));
+				System.out.println("------------------------------------------------------------------");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public Student topTenStudentOfAllBatch() {
+		try (Connection connection = DBConnection.getConnection();) {
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery("select s.student_id, s.student_firstname, s.student_lastname, m.percentage, s.batch_id from student s inner join marks m on s.student_id=m.student_id order by percentage desc limit 10");
+			while (rs.next()) {
+				System.out.println("Student ID: " + rs.getInt("student_id"));
+				System.out.println("Student First Name: " + rs.getString("student_firstname"));
+				System.out.println("Student Last Name: " + rs.getString("student_lastname"));
+				System.out.println("Percentage: " + rs.getFloat("percentage"));
+				System.out.println("Batch ID: " + rs.getInt("batch_id"));
+				System.out.println("------------------------------------------------------------------");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
+
+
 }

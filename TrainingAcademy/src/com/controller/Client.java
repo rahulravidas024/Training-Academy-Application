@@ -4,8 +4,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+import com.model.Batch;
 import com.model.Marks;
 import com.model.Student;
+import com.service.BatchService;
+import com.service.BatchServiceImplementation;
 import com.service.MarksService;
 import com.service.MarksServiceImplementation;
 import com.service.StudentService;
@@ -17,6 +20,7 @@ public class Client {
 		String str;
 		StudentService studentService = new StudentServiceImplementation();
 		MarksService marksService = new MarksServiceImplementation();
+		BatchService batchService = new BatchServiceImplementation();
 		String emailpat = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 		String mobilepat = "\\d{10}";
 		
@@ -25,7 +29,9 @@ public class Client {
 			System.out.println("**********************Training Academy************************");
 			System.out.println();
 			System.out.println(
-					"  1. Show All Student Details\t\t\t  2. Show One Student Record\n  3. Add New Student\t\t\t\t  4. Update Student Details\n  5. Delete Student Record\n\n  6. Show All Student Marks\t\t\t  7. Show One Student Marks\n  8. Add Student Marks\t\t\t\t  9. Update Student Marks\n  10. Delete Student Marks");
+					"  1. Show All Student Details\t\t\t  2. Show One Student Record\n  3. Add New Student\t\t\t\t  4. Update Student Details\n  5. Delete Student Record\n\n  "
+					+ "6. Show All Student Marks\t\t\t  7. Show One Student Marks\n  8. Add Student Marks\t\t\t\t  9. Update Student Marks\n  10. Delete Student Marks\n\n  "
+					+ "11. Show All Batches\t\t\t\t  12. Top 5 Student Batch Wise\n  13. Top 10 Student\t\t\t\t\t  14. Best Batch\n  15. Worst Batch");
 			System.out.println();
 			System.out.print("Enter Your Choice: ");
 			int choice = sc.nextInt();
@@ -33,6 +39,8 @@ public class Client {
 			Iterator<Student> itr = studentList.iterator();
 			List<Marks> marksList = marksService.getAllMarks();
 			Iterator<Marks> itr1 = marksList.iterator();
+			List<Batch> batchList = batchService.getAllBatch();
+			Iterator<Batch> itr2 = batchList.iterator();
 			switch (choice) {
 			case 1:
 				System.out.println("********************All Student Informations*********************");
@@ -56,6 +64,8 @@ public class Client {
 				System.out.println();
 				System.out.println("Enter student ID number to show Record");
 				int studentId = sc.nextInt();
+				System.out.println("********************Student Informations*********************");
+				System.out.println();
 				studentService.getStudent(studentId);
 				System.out.println("------------------------------------------------------------------");
 				break;
@@ -65,7 +75,7 @@ public class Client {
 				String address = null;
 				int batchId=0;
 				System.out.println(" ");
-				System.out.println("**************Insert Student information ************");
+				System.out.println("***********************Insert Student information *********************");
 				System.out.println();
 				System.out.print("Enter Student Id: ");
 				studentId = sc.nextInt();
@@ -112,7 +122,7 @@ public class Client {
 				break;
 
 			case 4:
-				System.out.println("**************Update Student information ************");
+				System.out.println("**********************Update Student information *********************");
 				System.out.println();
 				System.out.println("Enter Student Id to update: ");
 				studentId = sc.nextInt();
@@ -168,7 +178,7 @@ public class Client {
 				
 
 			case 6:
-				System.out.println("**********All Students Marks*************");
+				System.out.println("*************************All Students Marks***********************");
 				System.out.println();
 				while (itr1.hasNext()) {
 					Marks marks = itr1.next();
@@ -197,7 +207,7 @@ public class Client {
 				
 			case 8:
 				System.out.println(" ");
-				System.out.println("**************Insert Marks ************");
+				System.out.println("**************************Insert Marks *************************");
 				System.out.print("Enter Student Id: ");
 				studentId = sc.nextInt();
 				studentService.getName(studentId);
@@ -240,7 +250,7 @@ public class Client {
 				
 				int totalMarks = english+physics+chemistry+maths+biology;
 				float percentage = (float) (totalMarks/2.5);
-
+				
 				Marks marks = new Marks(studentId, english, physics, chemistry, maths, biology, totalMarks, percentage);
 				int status2 = marksService.insertMarks(marks);
 				if (status2 > 0) {
@@ -253,6 +263,7 @@ public class Client {
 
 			case 9:
 				System.out.println();
+				System.out.println("**************************Update Marks *************************");
 				System.out.println("Enter Student Id to update: ");
 				studentId = sc.nextInt();
 				studentService.getName(studentId);
@@ -315,6 +326,44 @@ public class Client {
 				System.out.println("------------------------------------------------------------------");
 				break;
 				
+			case 11:
+				System.out.println("*****************************All Batches****************************");
+				System.out.println();
+				while (itr2.hasNext()) {
+					Batch batch = itr2.next();
+					System.out.println("Batch Id: " + batch.getBatch_id());
+					System.out.println("Batch Name: " + batch.getBatchName());
+					System.out.println("Trainer Name: " + batch.getTrainerName());
+					System.out.println("------------------------------------------------------------------");
+				}
+				break;
+				
+			case 12:
+				System.out.println();
+				System.out.println("Enter Batch ID to show Top 5 Student");
+				batchId = sc.nextInt();
+				System.out.println("********************Top 5 Student of Batch: " + batchId + "********************");
+				System.out.println();
+				studentService.topFiveMeritListBatchWise(batchId);
+				break;
+				
+			case 13:
+				System.out.println();
+				System.out.println("********************Top 10 Student of All Batches********************");
+				studentService.topTenStudentOfAllBatch();
+				break;
+				
+			case 14:
+				System.out.println();
+				System.out.println("****************************Best Batch****************************");
+				batchService.showBatchNameWhoseAveragePercentageIsBest();
+				break;
+				
+			case 15:
+				System.out.println();
+				System.out.println("****************************Worst Batch****************************");
+				batchService.showWorstBatch();
+				break;
 
 			default:
 				System.out.println("Enter Correct Number");
@@ -324,7 +373,7 @@ public class Client {
 			System.out.print("Do you wish to continue(y/n) ? ");
 			str = sc.next();
 		} while (str.equals("y") || str.equals("Y"));
-		System.out.println("*******************Thank You****************************");
+		System.out.println("****************************Thank You****************************");
 	}
 
 }

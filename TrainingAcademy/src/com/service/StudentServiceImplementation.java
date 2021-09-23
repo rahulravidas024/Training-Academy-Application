@@ -55,4 +55,15 @@ public class StudentServiceImplementation implements StudentService {
 		return studentDao.getName(studentId);
 	}
 
+	@Override
+	public Student topFiveMeritListBatchWise(int batchId) {
+		return studentDao.topFiveMeritListBatchWise(batchId);
+	}
+
+	@Override
+	public Student topTenStudentOfAllBatch() {
+		return studentDao.topTenStudentOfAllBatch();
+	}
+
+
 }

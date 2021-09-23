@@ -17,4 +17,9 @@ public interface StudentDao {
 	int deleteStudent(int studentId);
 
 	int updateStudent(Student student);
+	
+	Student topFiveMeritListBatchWise(int batchId);
+	
+	Student topTenStudentOfAllBatch();
+	
 }
